@@ -1,0 +1,29 @@
+app/
+├─ api/
+│ ├─ auth/[...nextauth]/route.js
+│ ├─ socket/route.js
+│ └─ messages/route.js
+├─ login/page.jsx
+└─ chat/page.jsx
+
+
+components/
+├─ ChatHeader.jsx
+├─ ChatBubble.jsx
+├─ ChatList.jsx
+├─ MessageInput.jsx
+└─ VoiceRecorder.jsx
+
+
+lib/
+├─ mongodb.js
+├─ socket.js
+└─ cloudinary.js
+
+
+models/
+├─ User.js
+└─ Message.js
+
+
+https://www.pwabuilder.com/imageGenerator
