@@ -9,7 +9,9 @@ const withPWA = nextPWA({
 
 const nextConfig = {
   reactStrictMode: true,
-
+  devIndicators: {
+    buildActivity: false, // 👈 indha N logo remove aagum
+  },
   // 👇 IMPORTANT (stop turbopack conflict)
   turbopack: {},
 }

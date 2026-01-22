@@ -123,3 +123,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 🔥 FORCE kill Next.js DevTools badge (inline style override) */
+[data-next-badge="true"],
+[data-nextjs-dev-tools-button="true"],
+#next-logo {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
