@@ -11,7 +11,7 @@ const SplashScreen: React.FC = () => {
   useEffect(() => {
     // 3 seconds delay
     const timer = setTimeout(() => {
-      router.push('/login');
+      router.push('/gender');
     }, 3000);
 
     return () => clearTimeout(timer);

@@ -3,14 +3,28 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // Router import panniyaachu
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@chatoo.com");
+  const [password, setPassword] = useState("password123");
+  const [error, setError] = useState(""); // Error handling-ku
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Logging in with:", { email, password });
+    setError("");
+
+    // Dummy Credentials
+    const dummyEmail = "admin@chatoo.com";
+    const dummyPassword = "password123";
+
+    if (email === dummyEmail && password === dummyPassword) {
+      console.log("Success! Redirecting...");
+      router.push("/home"); // Redirect to home page
+    } else {
+      setError("Invalid email or password machi!");
+    }
   };
 
   return (
@@ -42,6 +56,17 @@ const LoginPage: React.FC = () => {
           </p>
         </div>
 
+        {/* Error Message */}
+        {error && (
+          <motion.p 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            className="text-red-400 text-xs text-center mb-4 bg-red-400/10 py-2 rounded-lg border border-red-400/20"
+          >
+            {error}
+          </motion.p>
+        )}
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
@@ -52,7 +77,7 @@ const LoginPage: React.FC = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@company.com"
+              placeholder="admin@chatoo.com" // Hint for dummy
               className="w-full px-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm"
               required
             />
@@ -71,7 +96,7 @@ const LoginPage: React.FC = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder="password123" // Hint for dummy
               className="w-full px-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-sm"
               required
             />
@@ -95,7 +120,6 @@ const LoginPage: React.FC = () => {
           <div className="flex-1 h-[1px] bg-white/10"></div>
         </div>
 
-        {/* Social Login - Image Issue Fixed */}
         <button className="w-full flex items-center justify-center gap-3 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-sm font-medium">
           <div className="relative w-5 h-5">
             <Image
@@ -107,7 +131,6 @@ const LoginPage: React.FC = () => {
           Google
         </button>
 
-        {/* Quote Issue Fixed: Don't -> Don&apos;t */}
         <p className="mt-8 text-center text-sm text-gray-400">
           Don&apos;t have an account?{" "}
           <a href="/signup" className="text-blue-400 font-semibold hover:underline">
