@@ -12,6 +12,16 @@ const nextConfig = {
   devIndicators: {
     buildActivity: false, // 👈 indha N logo remove aagum
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.pravatar.cc',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  },
   // 👇 IMPORTANT (stop turbopack conflict)
   turbopack: {},
 }
