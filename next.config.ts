@@ -4,8 +4,6 @@ import type { NextConfig } from "next";
 const withPWA = withPWAInit({
   dest: "public",
   disable: process.env.NODE_ENV === "development",
-  // 💡 register: true and skipWaiting: true are ENABLED by default here.
-  // Neenga extra-va add panna thevai illa.
 });
 
 const nextConfig: NextConfig = {
@@ -19,11 +17,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // 👇 Add this to satisfy the build warning
-  // Next 16 uses 'experimental.turbo' instead of root 'turbopack'
-  // experimental: {
-  //   turbo: {},
-  // },
+
+  // ✅ THIS LINE IS IMPORTANT
+  turbopack: {}, 
 };
 
 export default withPWA(nextConfig);
