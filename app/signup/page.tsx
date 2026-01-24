@@ -151,8 +151,8 @@ router.push('/gender');
                     maxLength={6}
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                    placeholder="000000"
-                    className="w-full pl-12 pr-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-emerald-500/50 outline-none text-xl tracking-[0.5em] font-black text-center transition-all"
+                    placeholder="Enter 6-digit code"
+                    className="w-full pl-12 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm tracking-[0.5em] font-black text-center font-bold transition-all"
                     required
                   />
                 </div>

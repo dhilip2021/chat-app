@@ -26,7 +26,8 @@ const LoginPage: React.FC = () => {
 
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp === "123456") { // Dummy OTP
+    if (otp === "123456") {
+      // Dummy OTP
       router.push("/home");
     } else {
       setError("Invalid OTP! Try '123456'");
@@ -45,11 +46,19 @@ const LoginPage: React.FC = () => {
         {/* Logo Section */}
         <div className="flex flex-col items-center mb-6">
           <div className="relative w-48 h-20 mb-1">
-            <Image src="/images/logo.png" alt="Chatoo Logo" fill className="object-contain" priority />
+            <Image
+              src="/images/logo.png"
+              alt="Chatoo Logo"
+              fill
+              className="object-contain"
+              priority
+            />
           </div>
           <h2 className="text-2xl font-bold tracking-tight">Login</h2>
           <p className="text-gray-400 text-sm mt-1">
-            {isOtpSent ? "Enter the code sent to your mobile" : "Quick login via Mobile Number"}
+            {isOtpSent
+              ? "Enter the code sent to your mobile"
+              : "Quick login via Mobile Number"}
           </p>
         </div>
 
@@ -76,11 +85,16 @@ const LoginPage: React.FC = () => {
                   Mobile Number
                 </label>
                 <div className="relative">
-                  <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <Phone
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+                  />
                   <input
                     type="tel"
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
+                    onChange={(e) =>
+                      setPhone(e.target.value.replace(/\D/g, ""))
+                    }
                     placeholder="98765 43210"
                     className="w-full pl-12 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm transition-all"
                     required
@@ -110,14 +124,17 @@ const LoginPage: React.FC = () => {
                   One-Time Password
                 </label>
                 <div className="relative">
-                  <MessageSquareCode size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                  <MessageSquareCode
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500"
+                  />
                   <input
                     type="text"
                     maxLength={6}
                     value={otp}
                     onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
                     placeholder="Enter 6-digit code"
-                    className="w-full pl-12 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm tracking-[0.5em] font-bold transition-all"
+                    className="w-full pl-12 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm tracking-[0.5em] font-black text-center font-bold transition-all"
                     required
                   />
                 </div>
@@ -142,7 +159,12 @@ const LoginPage: React.FC = () => {
 
         <p className="mt-8 text-center text-sm text-gray-400">
           New to Chatoo?{" "}
-          <a href="/signup" className="text-blue-400 font-semibold hover:underline">Create Account</a>
+          <a
+            href="/signup"
+            className="text-blue-400 font-semibold hover:underline"
+          >
+            Create Account
+          </a>
         </p>
       </motion.div>
     </div>
