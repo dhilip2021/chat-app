@@ -19,6 +19,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // 👇 Add this to satisfy the build warning
+  // Next 16 uses 'experimental.turbo' instead of root 'turbopack'
+  experimental: {
+    turbo: {},
+  },
 };
 
 export default withPWA(nextConfig);
