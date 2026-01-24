@@ -1,29 +1,24 @@
-import nextPWA from 'next-pwa'
+import withPWAInit from "@ducanh2912/next-pwa";
+import type { NextConfig } from "next";
 
-const withPWA = nextPWA({
-  dest: 'public',
-  register: true,
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
-})
+const withPWA = withPWAInit({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+  // 💡 register: true and skipWaiting: true are ENABLED by default here.
+  // Neenga extra-va add panna thevai illa.
+});
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   reactStrictMode: true,
-  devIndicators: {
-    buildActivity: false, // 👈 indha N logo remove aagum
-  },
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'i.pravatar.cc',
-        port: '',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "i.pravatar.cc",
+        pathname: "/**",
       },
     ],
   },
-  // 👇 IMPORTANT (stop turbopack conflict)
-  turbopack: {},
-}
+};
 
-export default withPWA(nextConfig)
+export default withPWA(nextConfig);

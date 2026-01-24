@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
       >
         {/* Logo Section */}
         <div className="flex flex-col items-center mb-8">
-          <div className="relative w-16 h-16 mb-4">
+          <div className="relative w-50 h-50">
             <Image
               src="/images/logo.png"
               alt="Chatoo Logo"
