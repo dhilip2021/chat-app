@@ -4,11 +4,11 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, EyeOff, Phone, MessageSquareCode, User, Mail } from "lucide-react";
+import { Eye, EyeOff, Phone, MessageSquareCode, User, Mail, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const SignUpPage: React.FC = () => {
-const router = useRouter();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,7 +16,7 @@ const router = useRouter();
     password: "",
   });
 
-  
+  const [countryCode, setCountryCode] = useState("+91"); // Default India
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +27,6 @@ const router = useRouter();
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Step 1: Form details check panni OTP anupura logic
   const handleSendOtp = (e: React.FormEvent) => {
     e.preventDefault();
     if (formData.phone.length < 10) {
@@ -35,17 +34,16 @@ const router = useRouter();
       return;
     }
     setError("");
-    console.log("Sending OTP to:", formData.phone);
+    // Backend-ku anupumbothu countryCode + phone join panni anupuvom
+    console.log("Sending OTP to:", countryCode + formData.phone);
     setIsOtpSent(true);
   };
 
-  // Step 2: OTP verify panni account create pandra logic
   const handleCreateAccount = (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp === "123456") { // Dummy OTP
-      console.log("Account Created Successfully!", formData);
-      // alert("Account Created!");
-router.push('/gender');
+    if (otp === "123456") {
+      console.log("Account Created!", { ...formData, fullPhone: countryCode + formData.phone });
+      router.push('/gender');
     } else {
       setError("Invalid OTP! Use 123456");
     }
@@ -60,38 +58,26 @@ router.push('/gender');
         animate={{ opacity: 1, scale: 1 }}
         className="relative z-10 w-full max-w-md p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl"
       >
-        {/* Header Section */}
         <div className="flex flex-col items-center mb-6">
           <div className="relative w-48 h-20 mb-1">
             <Image src="/images/logo.png" alt="Chatoo Logo" fill className="object-contain" priority />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight">
-            {isOtpSent ? "Verify Mobile" : "Create Account"}
-          </h2>
+          <h2 className="text-2xl font-bold tracking-tight">{isOtpSent ? "Verify Mobile" : "Create Account"}</h2>
           <p className="text-gray-400 text-sm mt-1 text-center">
-            {isOtpSent ? `OTP sent to ${formData.phone}` : "Join Chatoo community today"}
+            {isOtpSent ? `OTP sent to ${countryCode} ${formData.phone}` : "Join Chatoo community today"}
           </p>
         </div>
 
         {error && (
-          <p className="text-red-400 text-xs text-center mb-4 bg-red-400/10 py-2 rounded-lg border border-red-400/20">
-            {error}
-          </p>
+          <p className="text-red-400 text-xs text-center mb-4 bg-red-400/10 py-2 rounded-lg border border-red-400/20">{error}</p>
         )}
 
         <AnimatePresence mode="wait">
           {!isOtpSent ? (
-            // --- STEP 1: REGISTRATION DETAILS ---
-            <motion.form
-              key="details"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              onSubmit={handleSendOtp}
-              className="space-y-4"
-            >
+            <motion.form key="details" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }} onSubmit={handleSendOtp} className="space-y-4">
+              
               {/* Full Name */}
-              <div className="relative">
+              <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1.5 ml-1">Full Name</label>
                 <div className="relative">
                   <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -100,7 +86,7 @@ router.push('/gender');
               </div>
 
               {/* Email */}
-              <div className="relative">
+              <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1.5 ml-1">Email Address</label>
                 <div className="relative">
                   <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -108,17 +94,32 @@ router.push('/gender');
                 </div>
               </div>
 
-              {/* Mobile Number */}
-              <div className="relative">
+              {/* Mobile Number with Country Code Selector */}
+              <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1.5 ml-1">Mobile Number</label>
-                <div className="relative">
-                  <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-                  <input name="phone" type="tel" value={formData.phone} onChange={handleChange} placeholder="98765 43210" className="w-full pl-11 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm transition-all" required />
+                <div className="flex gap-2">
+                  <div className="relative">
+                    <select 
+                      value={countryCode} 
+                      onChange={(e) => setCountryCode(e.target.value)}
+                      className="appearance-none bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500/50 cursor-pointer pr-8 text-white h-full"
+                    >
+                      <option value="+91" className="bg-[#1e293b] text-white">🇮🇳 +91</option>
+                      <option value="+1" className="bg-[#1e293b] text-white">🇺🇸 +1</option>
+                      <option value="+44" className="bg-[#1e293b] text-white">🇬🇧 +44</option>
+                      <option value="+971" className="bg-[#1e293b] text-white">🇦🇪 +971</option>
+                    </select>
+                    <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                  </div>
+                  <div className="relative flex-1">
+                    <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
+                    <input name="phone" type="tel" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value.replace(/\D/g, "")})} placeholder="98765 43210" className="w-full pl-11 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm transition-all" required />
+                  </div>
                 </div>
               </div>
 
               {/* Password */}
-              <div className="relative">
+              <div>
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1.5 ml-1">Password</label>
                 <div className="relative group">
                   <input name="password" type={showPassword ? "text" : "password"} value={formData.password} onChange={handleChange} placeholder="••••••••" className="w-full px-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm transition-all" required />
@@ -133,46 +134,23 @@ router.push('/gender');
               </motion.button>
             </motion.form>
           ) : (
-            // --- STEP 2: OTP VERIFICATION ---
-            <motion.form
-              key="otp"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              onSubmit={handleCreateAccount}
-              className="space-y-6"
-            >
+            <motion.form key="otp" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} onSubmit={handleCreateAccount} className="space-y-6">
               <div className="relative">
                 <label className="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 text-center">Enter 6-Digit OTP</label>
                 <div className="relative">
                   <MessageSquareCode size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" />
-                  <input
-                    type="text"
-                    maxLength={6}
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                    placeholder="Enter 6-digit code"
-                    className="w-full pl-12 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-blue-500/50 outline-none text-sm tracking-[0.5em] font-black text-center font-bold transition-all"
-                    required
-                  />
+                  <input type="text" maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))} placeholder="000000" className="w-full pl-12 pr-5 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-emerald-500/50 outline-none text-sm tracking-[0.5em] font-black text-center transition-all" required />
                 </div>
               </div>
-
               <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" className="w-full py-3 bg-gradient-to-r from-emerald-600 to-emerald-400 rounded-xl font-bold text-sm shadow-lg shadow-emerald-500/20">
                 Verify & Create Account
               </motion.button>
-
-              <button type="button" onClick={() => setIsOtpSent(false)} className="w-full text-xs text-gray-500 hover:text-white transition-colors">
-                ← Go back and edit details
-              </button>
+              <button type="button" onClick={() => setIsOtpSent(false)} className="w-full text-xs text-gray-500 hover:text-white transition-colors">← Go back and edit details</button>
             </motion.form>
           )}
         </AnimatePresence>
 
-        <p className="mt-8 text-center text-sm text-gray-400">
-          Already have an account?{" "}
-          <Link href="/login" className="text-blue-400 font-semibold hover:underline">Log In</Link>
-        </p>
+        <p className="mt-8 text-center text-sm text-gray-400">Already have an account? <Link href="/login" className="text-blue-400 font-semibold hover:underline">Log In</Link></p>
       </motion.div>
     </div>
   );
